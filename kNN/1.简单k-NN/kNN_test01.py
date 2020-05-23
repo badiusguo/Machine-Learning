@@ -40,12 +40,15 @@ Modify:
 	2017-07-13
 """
 def classify0(inx, dataset, labels, k):
-	# 计算距离
+	# 计算距离,这里的axis=1对应的是“[]”所在的位置，axis=0,相当于最外层的方括号各元素相加，axis=1，相当于次一层的各元素相加
+	# 比如a=np.array([[1,1],[2,2]]),np.sum(a,axis=0)时,返回[3,3];np.sum(a,axis=1)时，返回[2,4]
 	dist = np.sum((inx - dataset)**2, axis=1)**0.5
-	# k个最近的标签
+	# k个最近的标签,dist.argsort()返回的是最小dist的序列，所以labels[index]获得的是最小dist序列对应的label
 	k_labels = [labels[index] for index in dist.argsort()[0 : k]]
 	# 出现次数最多的标签即为最终类别
+	# most_common返回的是一个列表，[0][0]是取列表里的第一行第一列的元素
 	label = collections.Counter(k_labels).most_common(1)[0][0]
+
 	return label
 
 if __name__ == '__main__':

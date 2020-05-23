@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 import numpy as np
 from functools import reduce
+from math import log
 
 """
 函数说明:创建实验样本
@@ -101,8 +102,11 @@ def trainNB0(trainMatrix,trainCategory):
 		else:												#统计属于非侮辱类的条件概率所需的数据，即P(w0|0),P(w1|0),P(w2|0)···
 			p0Num += trainMatrix[i]
 			p0Denom += sum(trainMatrix[i])
-	p1Vect = p1Num/p1Denom									#相除        
-	p0Vect = p0Num/p0Denom          
+	p1Vect = p1Num/p1Denom									#相除
+	p0Vect = p0Num/p0Denom
+	# p1Vect = log(p1Num / p1Denom)
+	# p0Vect = log(p0Num / p0Denom)
+
 	return p0Vect,p1Vect,pAbusive							#返回属于侮辱类的条件概率数组，属于非侮辱类的条件概率数组，文档属于侮辱类的概率
 
 """
@@ -124,10 +128,12 @@ Modify:
 	2017-08-12
 """
 def classifyNB(vec2Classify, p0Vec, p1Vec, pClass1):
-	p1 = reduce(lambda x,y:x*y, vec2Classify * p1Vec) * pClass1    			#对应元素相乘  这里需要好好理解一下 
+	p1 = reduce(lambda x,y:x*y, vec2Classify * p1Vec) * pClass1			#对应元素相乘  这里需要好好理解一下,reduce()
 	p0 = reduce(lambda x,y:x*y, vec2Classify * p0Vec) * (1.0 - pClass1)
-	print('p0:',p0)
-	print('p1:',p1)
+	print('logp0:', p0)
+	print('logp1:', p1)
+	# print('p0:',p0)
+	# print('p1:',p1)
 	if p1 > p0:
 		return 1
 	else: 

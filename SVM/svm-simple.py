@@ -27,7 +27,7 @@ def loadDataSet(fileName):
 		lineArr = line.strip().split('\t')
 		dataMat.append([float(lineArr[0]), float(lineArr[1])])      #添加数据
 		labelMat.append(float(lineArr[2]))                          #添加标签
-	return dataMat,labelMat
+	return dataMat, labelMat
 
 
 """
@@ -145,6 +145,7 @@ def smoSimple(dataMatIn, classLabels, C, toler, maxIter):
 		for i in range(m):
 			#步骤1：计算误差Ei
 			fXi = float(np.multiply(alphas,labelMat).T*(dataMatrix*dataMatrix[i,:].T)) + b
+			print(fXi)
 			Ei = fXi - float(labelMat[i])
 			#优化alpha，设定一定的容错率。
 			if ((labelMat[i]*Ei < -toler) and (alphas[i] < C)) or ((labelMat[i]*Ei > toler) and (alphas[i] > 0)):
@@ -183,12 +184,14 @@ def smoSimple(dataMatIn, classLabels, C, toler, maxIter):
 				#统计优化次数
 				alphaPairsChanged += 1
 				#打印统计信息
-				print("第%d次迭代 样本:%d, alpha优化次数:%d" % (iter_num,i,alphaPairsChanged))
+				# print("第%d次迭代 样本:%d, alpha优化次数:%d" % (iter_num,i,alphaPairsChanged))
 		#更新迭代次数
 		if (alphaPairsChanged == 0): iter_num += 1
 		else: iter_num = 0
-		print("迭代次数: %d" % iter_num)
-	return b,alphas
+		# print("迭代次数: %d" % iter_num)
+	# print(b)
+	# print(alphas)
+	return b, alphas
 
 """
 函数说明:分类结果可视化
@@ -266,5 +269,6 @@ if __name__ == '__main__':
 	dataMat, labelMat = loadDataSet('testSet.txt')
 	b,alphas = smoSimple(dataMat, labelMat, 0.6, 0.001, 40)
 	w = get_w(dataMat, labelMat, alphas)
+	# showDataSet(dataMat, labelMat)
 	showClassifer(dataMat, w, b)
-	
+	# print(dataMat)

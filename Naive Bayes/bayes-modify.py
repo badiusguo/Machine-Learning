@@ -165,7 +165,7 @@ Modify:
 """
 def spamTest():
     docList = []; classList = []; fullText = []
-    for i in range(1, 26):                                                  #遍历25个txt文件
+    for i in range(1, 26):                                                  #遍历25个txt文件，（1，26）实际是1~25
         wordList = textParse(open('email/spam/%d.txt' % i, 'r').read())     #读取每个垃圾邮件，并字符串转换成字符串列表
         docList.append(wordList)
         fullText.append(wordList)

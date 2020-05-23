@@ -113,7 +113,7 @@ def chooseBestFeatureToSplit(dataSet):
 	bestFeature = -1									#最优特征的索引值
 	for i in range(numFeatures): 						#遍历所有特征
 		#获取dataSet的第i个所有特征
-		featList = [example[i] for example in dataSet]
+		featList = [example[i] for example in dataSet] # 每一行的第i个元素组成的列表
 		uniqueVals = set(featList)     					#创建set集合{},元素不可重复
 		newEntropy = 0.0  								#经验条件熵
 		for value in uniqueVals: 						#计算信息增益
@@ -182,6 +182,7 @@ def createTree(dataSet, labels, featLabels):
 	for value in uniqueVals:									#遍历特征，创建决策树。
 		subLabels = labels[:]
 		myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet, bestFeat, value), subLabels, featLabels)
+		print(myTree[bestFeatLabel][value])
         
 	return myTree
 
@@ -253,7 +254,7 @@ Modify:
 """
 def plotNode(nodeTxt, centerPt, parentPt, nodeType):
 	arrow_args = dict(arrowstyle="<-")											#定义箭头格式
-	font = FontProperties(fname=r"c:\windows\fonts\simsunb.ttf", size=14)		#设置中文字体
+	font = FontProperties(fname=r"C:\Windows\Fonts\simsun.ttc", size=14)		#设置中文字体
 	createPlot.ax1.annotate(nodeTxt, xy=parentPt,  xycoords='axes fraction',	#绘制结点
 		xytext=centerPt, textcoords='axes fraction',
 		va="center", ha="center", bbox=nodeType, arrowprops=arrow_args, FontProperties=font)
@@ -405,13 +406,18 @@ def grabTree(filename):
 
 
 if __name__ == '__main__':
-	dataSet, labels = createDataSet()
+	fr=open('lenses.txt')
+	labels=['age','prescript','astigmatic', 'tearRate']
+	dataSet=[inst.strip().split('\t') for inst in fr.readlines()]
+	print(dataSet)
+	# print(label)
+	# dataSet, labels = createDataSet()
 	featLabels = []
 	myTree = createTree(dataSet, labels, featLabels)
 	createPlot(myTree)
 	testVec = [0,1]										#测试数据
 	result = classify(myTree, featLabels, testVec)
-	if result == 'yes':
-		print('放贷')
-	if result == 'no':
-		print('不放贷')
+	# if result == 'yes':
+	# 	print('放贷')
+	# if result == 'no':
+	# 	print('不放贷')
